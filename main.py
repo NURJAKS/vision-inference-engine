@@ -2,12 +2,23 @@ import cv2
 import mediapipe as mp
 from ultralytics import YOLO
 
+try:
+    import mediapipe.solutions.hands as mp_hands
+    import mediapipe.solutions.drawing_utils as mp_draw
+except (AttributeError, ImportError):
+    try:
+        from mediapipe.python.solutions import hands as mp_hands
+        from mediapipe.python.solutions import drawing_utils as mp_draw
+    except Exception:
+        mp_hands = None
+        mp_draw = None
+
 yolo_model = YOLO("yolov8n.pt")
-mp_hands = mp.solutions.hands
-hands = mp_hands.Hands()
-mp_draw = mp.solutions.drawing_utils
+hands = mp_hands.Hands() if mp_hands else None
 
 def detect_gesture(frame):
+    if not hands:
+        return frame
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     result = hands.process(rgb)
 
