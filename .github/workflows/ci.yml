@@ -40,4 +40,4 @@ jobs:
 
       - name: Run Inference Test Suite
         run: |
-          pytest -v tests/
+          python -m pytest -v tests/
