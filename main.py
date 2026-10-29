@@ -7,10 +7,6 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
 mp_draw = mp.solutions.drawing_utils
 
-mode = 'object'
-
-cap = cv2.VideoCapture(0)
-
 def detect_gesture(frame):
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     result = hands.process(rgb)
@@ -53,27 +49,38 @@ def detect_gesture(frame):
     return frame
 
 
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        break
+def run_pipeline(camera_id: int = 0):
+    """Run real-time vision inference loop with dual-mode toggle."""
 
-    if mode == 'object':
-        results = yolo_model(frame)
-        frame = results[0].plot()
-    else:
-        frame = detect_gesture(frame)
+    mode = 'object'
+    cap = cv2.VideoCapture(camera_id)
+    try:
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
 
-    cv2.putText(frame, f"Mode: {mode}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
-    cv2.imshow("AI Vision", frame)
+            if mode == 'object':
+                results = yolo_model(frame)
+                frame = results[0].plot()
+            else:
+                frame = detect_gesture(frame)
 
-    key = cv2.waitKey(1) & 0xFF
-    if key == ord('q'):
-        break
-    elif key == ord('o'):
-        mode = 'object'
-    elif key == ord('h'):
-        mode = 'hand'
+            cv2.putText(frame, f"Mode: {mode}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 2)
+            cv2.imshow("AI Vision", frame)
 
-cap.release()
-cv2.destroyAllWindows()
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord('q'):
+                break
+            elif key == ord('o'):
+                mode = 'object'
+            elif key == ord('h'):
+                mode = 'hand'
+    finally:
+        cap.release()
+        cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    run_pipeline()
+

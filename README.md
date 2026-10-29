@@ -2,6 +2,7 @@
 
 > **Real-time edge computer vision inference pipeline combining YOLOv8 deep neural object detection with MediaPipe 21-point hand landmark kinematics and heuristic spatial gesture classification.**
 
+[![CI](https://github.com/NURJAKS/vision-inference-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/NURJAKS/vision-inference-engine/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![OpenCV](https://img.shields.io/badge/OpenCV-4.8+-5C3EE8?logo=opencv&logoColor=white)](https://opencv.org/)
 [![YOLOv8](https://img.shields.io/badge/YOLOv8-Ultralytics-00FFFF?logo=yolo&logoColor=black)](https://github.com/ultralytics/ultralytics)
